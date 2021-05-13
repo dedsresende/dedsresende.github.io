@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>DATAHOOD</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- <script src="script/PapaParse-4.4.0/papaparse.min.js"></script> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+  <link href="style/styles.css" rel="stylesheet">
+
+
+</head>
+  <body>
+    <div class="row search-page">
+      <input type="search" class="form-control form-search font-weight-bold align-middle" placeholder="Type an address or place name you want to explore" aria-label="Search" aria-describedby="search-addon" />
+    </div>
+
+    <div class="container act-layer">
+
+      <nav class="navbar navbar-expand-xxl">
+        <a class="navbar-brand text-center" href="#"><img class="logo" src="graphics/datahood logo dark long.png"></a>
+        <button type="button" class="btn" id="btn-user"><i class="fa fa-user-circle"></i></button>
+      </nav>
+
+      <br>
+
+      <div class="row">
+
+        <div class="col-6">
+
+          <div class="right-menu">
+
+            <div class="right-menu-top">
+              <div class="row">
+                <button type="button" class="btn btn-menu font-weight-bold" id="btn-explore">Explore</button>
+              </div>
+              <div class="row">
+                <button type="button" class="btn btn-menu font-weight-bold" id="btn-compare">Compare</button>
+              </div>
+              <div class="row">
+                <button type="button" class="btn btn-menu font-weight-bold" id="btn-discover">Discover</button>
+              </div>
+            </div>
+
+            <div class="right-menu-bottom">
+              <div class="row">
+                <button type="button" class="btn btn-menu font-weight-bold" id="btn-demographics">Demographics</button>
+                <div class="data-box"></div>
+              </div>
+              <div class="row">
+                <button type="button" class="btn btn-menu font-weight-bold" id="btn-activities">Activities</button>
+                <div class="data-box"></div>
+              </div>
+              <div class="row">
+                <button type="button" class="btn btn-menu font-weight-bold" id="btn-realestate">Real estate</button>
+                <div class="data-box"></div>
+              </div>
+              <div class="row">
+                <button type="button" class="btn btn-menu font-weight-bold" id="btn-humanflow">Human flow</button>
+                <div class="data-box"></div>
+              </div>
+              <div class="row">
+                <button type="button" class="btn btn-menu font-weight-bold" id="btn-transaction">Transaction</button>
+                <div class="data-box"></div>
+              </div>
+              <div class="row">
+                <button type="button" class="btn btn-menu font-weight-bold" id="btn-transport">Transport</button>
+                <div class="data-box"></div>
+              </div>
+              <div class="row">
+                <p>catchment area / min</p>
+              </div>
+
+              <div class="row">
+                <div class="col-4">
+                  <button type="button" class="btn btn-dist font-weight-bold" id="btn-5" minutes=5>5</button>
+                </div>
+                <div class="col-4">
+                  <button type="button" class="btn btn-dist font-weight-bold" id="btn-10" minutes=10>10</button>
+                </div>
+                <div class="col-4">
+                  <button type="button" class="btn btn-dist font-weight-bold" id="btn-15" minutes=15>15</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col-6">
+
+          <div class="left-menu float-right">
+
+            <div class="left-menu-top">
+              <div class="row">
+                <div class="col-12">
+                  <p>Selected locations</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 adr-table"></div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="mapBox" id="map"></div>
+
+    <script src="script/data/data_adr.js"></script>
+    <script src="script/data/data_isoc.js"></script>
+    <script src="script/interact.js"></script>
+    <script src="script/map.js"></script>
+    <script src="script/app.js"></script>
+
+  </body>
+</html>
