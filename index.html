@@ -5,13 +5,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- <script src="script/PapaParse-4.4.0/papaparse.min.js"></script> -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-   crossorigin=""></script>
+   crossorigin="">
+   </script>
+
 
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -21,11 +22,10 @@
     crossorigin=""/>
   <link href="style/styles.css" rel="stylesheet">
 
-
 </head>
   <body>
     <div class="row search-page">
-      <input type="search" class="form-control form-search font-weight-bold align-middle" placeholder="Type an address or place name you want to explore" aria-label="Search" aria-describedby="search-addon" />
+      <input type="search" class="form-control form-search font-weight-bold align-middle" placeholder="Type an address or place name you want to explore" aria-label="Search" aria-describedby="search-addon" id="search_landing"/>
     </div>
 
     <div class="container act-layer">
@@ -55,47 +55,7 @@
               </div>
             </div>
 
-            <div class="right-menu-bottom">
-              <div class="row">
-                <button type="button" class="btn btn-menu font-weight-bold" id="btn-demographics">Demographics</button>
-                <div class="data-box"></div>
-              </div>
-              <div class="row">
-                <button type="button" class="btn btn-menu font-weight-bold" id="btn-activities">Activities</button>
-                <div class="data-box"></div>
-              </div>
-              <div class="row">
-                <button type="button" class="btn btn-menu font-weight-bold" id="btn-realestate">Real estate</button>
-                <div class="data-box"></div>
-              </div>
-              <div class="row">
-                <button type="button" class="btn btn-menu font-weight-bold" id="btn-humanflow">Human flow</button>
-                <div class="data-box"></div>
-              </div>
-              <div class="row">
-                <button type="button" class="btn btn-menu font-weight-bold" id="btn-transaction">Transaction</button>
-                <div class="data-box"></div>
-              </div>
-              <div class="row">
-                <button type="button" class="btn btn-menu font-weight-bold" id="btn-transport">Transport</button>
-                <div class="data-box"></div>
-              </div>
-              <div class="row">
-                <p>catchment area / min</p>
-              </div>
-
-              <div class="row">
-                <div class="col-4">
-                  <button type="button" class="btn btn-dist font-weight-bold" id="btn-5" minutes=5>5</button>
-                </div>
-                <div class="col-4">
-                  <button type="button" class="btn btn-dist font-weight-bold" id="btn-10" minutes=10>10</button>
-                </div>
-                <div class="col-4">
-                  <button type="button" class="btn btn-dist font-weight-bold" id="btn-15" minutes=15>15</button>
-                </div>
-              </div>
-            </div>
+            <div class="right-menu-bottom"></div>
 
           </div>
 
@@ -114,6 +74,9 @@
               <div class="row">
                 <div class="col-12 adr-table"></div>
               </div>
+              <div class="row">
+                <input type="search" class="form-control form-search font-weight-bold align-middle" placeholder="Add a place" aria-label="Search" aria-describedby="search-addon" id="search_menu"/>
+              </div>
             </div>
 
           </div>
@@ -128,6 +91,7 @@
 
     <script src="script/data/data_adr.js"></script>
     <script src="script/data/data_isoc.js"></script>
+    <script src="script/data_box.js"></script>
     <script src="script/interact.js"></script>
     <script src="script/map.js"></script>
     <script src="script/app.js"></script>

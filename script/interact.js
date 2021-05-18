@@ -1,38 +1,25 @@
+var markers_sel = new Set();
+var markers_screen = new Set();
+var minutes = 5;
+var isoc_opt = {
+  fillColor: "#ffffff",
+  color: "#c3d4ca",
+  weight: 5,
+  opacity: 1,
+  fillOpacity: 0.6
+};
+var fill_map = false;
+
+
 $(".form-search").on('keypress',function(e) {
   if(e.which == 13) {
-    var adr = $(this).val().toLowerCase();
+    addMarker($(this).val());
 
-    data_adr['features'].forEach(function(e) {
-      var search_txt = e['properties']['search_txt'];
-
-      if(search_txt){
-        search_txt = search_txt.toLowerCase();
-
-        if(search_txt.includes(adr)){
-          var adr_lbl=e['properties']['street_name']+' '+e['properties']['street_number'];
-
-          $(".adr-table").append(
-            `
-            <div class="row">
-              <div class="col-12">
-                <a class="font-weight-bold">${adr_lbl}</a>
-              </div>
-            </div>
-            `
-          );
-
-          L.geoJSON(e).addTo(map);
-
-        };
-
-      };
-
-    });
-
-    $(".search-page").fadeOut("slow");
-    $(".right-menu-top").fadeIn("slow");
-    $(".left-menu-top").fadeIn("slow");
-
+    if($(this).is("#search_landing")){
+      $(".search-page").fadeOut("slow");
+      $(".right-menu-top").fadeIn("slow");
+      $(".left-menu-top").fadeIn("slow");
+    };
   };
 });
 
@@ -49,13 +36,32 @@ $(".btn-menu").click(function(){
 
     });
 
-    if($(this).is("#btn-explore")){
+    if($(this).is("#btn-explore") && markers_sel.size===1){
       $(".right-menu-bottom").fadeIn("slow");
+    }else if($(this).is("#btn-compare") || $(this).is("#btn-discover")){
+      $(".right-menu-bottom").fadeOut("slow");
+      clearMap();
+      fill_map = true;
+    }else if($(this).is("#btn-explore") && fill_map){
+      fillMap();
+      fill_map = false;
     };
 
   if(menu==='right-menu-bottom' && !$(this).hasClass(".btn-dist")){
     $(".data-box").each(function(){$(this).fadeOut("slow")});
 
+    var adr_sel = Array.from(markers_sel)[0]
+    adr_sel = data_adr["features"].filter(i=>i["properties"]["adr_id"]==adr_sel);
+    adr_sel = adr_sel[0]["properties"];
+
+    var osmid_sel = adr_sel['osmid'];
+
+    clearMarkers(adr_sel["adr_id"]);
+    addIsoc(osmid_sel, minutes);
+
+    adr_sel = adr_sel["street_name"]+' '+adr_sel["street_number"]+', '+adr_sel["region"];
+
+    $(this).siblings().children().first().children().children().first().text(adr_sel);
     $(this).siblings().fadeIn("slow");
   };
 
@@ -70,9 +76,30 @@ $(".btn-dist").click(function(){
   });
 
   $(this).toggleClass("btn-menu-selected");
+
+  minutes = Number($(this).attr("minutes"));
+
+  var adr_sel = data_adr["features"].filter(i=>i["properties"]["adr_id"]==markers_sel[0]);
+  adr_sel = adr_sel[0]["properties"];
+  var osmid_sel = adr_sel['osmid'];
+
+  updateIsoc(osmid_sel, minutes);
 });
 
 
 $(".logo").click(function(e){
   location.reload(true);
+});
+
+
+$(".adr-table").on("click", "i.fa-close", function(){
+  var adr_id = Number($(this).parents().eq(1).attr("adr_id"));
+  removeMarker(adr_id);
+  $(this).parents().eq(1).remove();
+});
+
+
+$(".right-menu-bottom").on("click", "i.fa-close", function(){
+  $(".data-box").each(function(){$(this).fadeOut("slow")});
+  $(".btn-menu").each(function(){$(this).removeClass("btn-menu-selected")});
 });
