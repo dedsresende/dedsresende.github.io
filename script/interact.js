@@ -3,12 +3,34 @@ var markers_screen = new Set();
 var minutes = 5;
 var isoc_opt = {
   fillColor: "#ffffff",
-  color: "#c3d4ca",
-  weight: 5,
+  color: "#01233c",
+  weight: 1,
   opacity: 1,
   fillOpacity: 0.6
 };
 var fill_map = false;
+
+
+function fillCompareBox(){
+  var data_fill = data_adr['features'].filter(a=>markers_sel.has(a["properties"]["adr_id"]));
+  data_fill.forEach((item, i) => {
+    var adr = item["properties"]["street_name"]+' '+item["properties"]["street_number"]+', '+item["properties"]["region"]
+
+    $("tbody").append(
+      `
+      <tr>
+        <td class="text-left">${adr}</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+      </tr>
+      `
+    );
+  });
+};
 
 
 $(".form-search").on('keypress',function(e) {
@@ -38,13 +60,20 @@ $(".btn-menu").click(function(){
 
     if($(this).is("#btn-explore") && markers_sel.size===1){
       $(".right-menu-bottom").fadeIn("slow");
-    }else if($(this).is("#btn-compare") || $(this).is("#btn-discover")){
-      $(".right-menu-bottom").fadeOut("slow");
-      clearMap();
-      fill_map = true;
     }else if($(this).is("#btn-explore") && fill_map){
       fillMap();
       fill_map = false;
+    }else if($(this).is("#btn-discover")){
+      $(".right-menu-bottom").fadeOut("slow");
+      clearMap();
+      fill_map = true;
+    }else if($(this).is("#btn-compare") && markers_sel.size>1){
+      $(".right-menu-bottom").fadeIn("slow");
+      $(".left-menu-top").fadeOut("slow");
+      $(".compare-box").fadeIn("slow");
+      clearMap();
+      fill_map = true;
+      fillCompareBox();
     };
 
   if(menu==='right-menu-bottom' && !$(this).hasClass(".btn-dist")){
@@ -94,7 +123,7 @@ $(".logo").click(function(e){
 
 $(".adr-table").on("click", "i.fa-close", function(){
   var adr_id = Number($(this).parents().eq(1).attr("adr_id"));
-  removeMarker(adr_id);
+  markers_sel.delete(adr_id);
   $(this).parents().eq(1).remove();
 });
 

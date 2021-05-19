@@ -11,6 +11,9 @@ function resize(){
     $('.act-layer').height($('.search-page').height());
 
     $('.menu-right').height($('.act-layer').height()-50);
+    $(".compare-box").width($('.mapBox').width()-350);
+    $(".compare-box").height($('.mapBox').height()-200);
+
 };
 
 $(document).ready(function(){

@@ -22,13 +22,36 @@ function addMap(){
 
 
 function markerOnClick(marker){
-  var id = marker["target"]["options"]["adr_id"];
-  $(`[adr_id=${id}]`).toggleClass("map-marker-selected");
+  var adr_id = marker["target"]["options"]["adr_id"];
+  var adr_lbl = marker["target"]["options"]['street_name']+' '+marker["target"]["options"]['street_number'];
 
-  if($(`[adr_id=${id}]`).hasClass("map-marker-selected")){
-    markers_sel.add(id);
+  $(`i[adr_id=${adr_id}]`).toggleClass("map-marker-selected");
+
+  if($(`[adr_id=${adr_id}]`).hasClass("map-marker-selected")){
+    markers_sel.add(adr_id);
+
+    $(".adr-table").append(
+      `
+      <div class="row" adr_id=${adr_id}>
+        <div class="col-11 text-left">
+          <p class="font-weight-bold">${adr_lbl}</p>
+        </div>
+        <a class="col-1">
+          <i class="fa fa-close"></i>
+        </a>
+      </div>
+      `
+    );
+
   }else{
-    markers_sel.delete(id);
+    $(".adr-table").children(`[adr_id=${adr_id}]`).remove();
+    markers_sel.delete(adr_id);
+  };
+
+  if(markers_sel.size>0){
+    $(".adr_box").fadeIn("slow");
+  }else{
+    $(".adr_box").fadeOut("slow");
   };
 };
 
@@ -45,22 +68,6 @@ function addMarker(address){
     search_txt = search_txt.toLowerCase();
 
     if(search_txt.includes(adr)){
-      var adr_lbl=e['properties']['street_name']+' '+e['properties']['street_number'];
-
-      $(".adr-table").append(
-        `
-        <div class="row" adr_id=${adr_id}>
-          <div class="col-11 text-left">
-            <p class="font-weight-bold">${adr_lbl}</p>
-          </div>
-          <a class="col-1">
-            <i class="fa fa-close"></i>
-          </a>
-        </div>
-        `
-      );
-
-
       var marker_icon = L.divIcon({
         html: `<i class="fa fa-map-marker fa-4x" adr_id="${adr_id}"></i>`,
         iconSize: new L.Point(20, 20),
