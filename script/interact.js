@@ -67,6 +67,7 @@ $(".btn-menu").click(function(){
       $(".right-menu-bottom").fadeOut("slow");
       clearMap();
       fill_map = true;
+      $(".subscribe-page").fadeIn("slow");
     }else if($(this).is("#btn-compare") && markers_sel.size>1){
       $(".right-menu-bottom").fadeIn("slow");
       $(".left-menu-top").fadeOut("slow");
@@ -131,4 +132,53 @@ $(".adr-table").on("click", "i.fa-close", function(){
 $(".right-menu-bottom").on("click", "i.fa-close", function(){
   $(".data-box").each(function(){$(this).fadeOut("slow")});
   $(".btn-menu").each(function(){$(this).removeClass("btn-menu-selected")});
+});
+
+
+$(".compare-box").on("click", "i.fa-close", function(){
+  $(".compare-box").fadeOut("slow");
+  fillMap();
+});
+
+
+$(".subscribe-page").on("click", "i.fa-close", function(){
+  $(".subscribe-page").fadeOut("slow");
+  fillMap();
+});
+
+
+$(".form-check").click(function(){
+  $(this).toggleClass("fa-circle-o fa-circle");
+});
+
+
+$(".subscribe").click(function(){
+  $(".right-menu-bottom").fadeOut("slow");
+  clearMap();
+  fill_map = true;
+  $(".subscribe-page").fadeIn("slow");
+});
+
+$("#submit").click(function(){
+  var email=$("#email").val();
+  var info = new Array();
+
+  $(".fa-circle").each(function(){
+    info.push($(this).parents().eq(0).siblings().children().text());
+  });
+
+  info = info.join(', ')
+
+  Email.send({
+    SecureToken : "eb6de852-4848-4ddb-adbe-f31585ce46ac",
+    To : email,
+    From : "dedsresende@gmail.com",
+    Subject : "DATAHOOD test!",
+    Body : info
+  }).then(
+    message => alert("Thanks for contacting DATAHOOD!")
+  );
+
+  $(".subscribe-page").fadeOut("slow");
+  fillMap();
 });
