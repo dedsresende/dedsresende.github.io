@@ -22,17 +22,18 @@ function addMap(){
 
 
 function markerOnClick(marker){
+  var osmid = marker["target"]["options"]["osmid"];
   var adr_id = marker["target"]["options"]["adr_id"];
   var adr_lbl = marker["target"]["options"]['street_name']+' '+marker["target"]["options"]['street_number'];
 
-  $(`i[adr_id=${adr_id}]`).toggleClass("map-marker-selected");
+  $(`i[osmid=${osmid}]`).toggleClass("map-marker-selected");
 
-  if($(`[adr_id=${adr_id}]`).hasClass("map-marker-selected")){
+  if($(`[osmid=${osmid}]`).hasClass("map-marker-selected")){
     markers_sel.add(adr_id);
 
     $(".adr-table").append(
       `
-      <div class="row" adr_id=${adr_id}>
+      <div class="row" adr_id=${adr_id} osmid=${osmid}>
         <div class="col-11 text-left">
           <p class="font-weight-bold">${adr_lbl}</p>
         </div>
@@ -44,7 +45,7 @@ function markerOnClick(marker){
     );
 
   }else{
-    $(".adr-table").children(`[adr_id=${adr_id}]`).remove();
+    $(".adr-table").children(`[osmid=${osmid}]`).remove();
     markers_sel.delete(adr_id);
   };
 
@@ -60,35 +61,36 @@ function addMarker(address){
   var marker_group = new Array();
   var adr = address.toLowerCase();
 
-  data_adr['features'].forEach(function(e) {
-    var search_txt = e['properties']['search_txt'];
-    var adr_id = e['properties']['adr_id'];
+  data_adr.forEach(function(e) {
+    var search_txt = e['search_txt'];
+    var adr_id = e['adr_id'];
+    var osmid = e['osmid'];
 
-  if(search_txt){
-    search_txt = search_txt.toLowerCase();
+    if(search_txt){
+      search_txt = search_txt.toLowerCase();
 
-    if(search_txt.includes(adr)){
-      var marker_icon = L.divIcon({
-        html: `<i class="fa fa-map-marker fa-4x" adr_id="${adr_id}"></i>`,
-        iconSize: new L.Point(20, 20),
-        className: 'map-marker'
-      });
+      if(search_txt.includes(adr)){
+        var marker_icon = L.divIcon({
+          html: `<i class="fa fa-map-marker fa-4x" adr_id=${adr_id} osmid=${osmid}></i>`,
+          iconSize: new L.Point(20, 20),
+          className: 'map-marker'
+        });
 
-      e['properties']['pointToLayer'] = function (feature, latlng) {return L.marker(latlng, {icon: marker_icon})};
-      e['properties']["type"] = 'marker';
+      e["type"] = 'marker';
+      e["icon"] = marker_icon;
 
-      var marker = L.geoJSON(e, e['properties']).on('click', markerOnClick);
+      var marker = L.marker([e["lat"], e["lon"]], e).on('click', markerOnClick);
 
       marker.addTo(map);
       markers_screen.add(adr_id);
       marker_group.push(marker);
+      };
     };
-  };
-});
+  });
 
-marker_group = new L.featureGroup(marker_group);
-map.flyTo([marker_group.getBounds().getCenter()["lat"], marker_group.getBounds().getCenter()["lng"]], 12);
-marker_group = null;
+  marker_group = new L.featureGroup(marker_group);
+  map.flyTo([marker_group.getBounds().getCenter()["lat"], marker_group.getBounds().getCenter()["lng"]], 12);
+  marker_group = null;
 };
 
 
@@ -113,9 +115,9 @@ function clearMap(){
 };
 
 
-function clearMarkers(adr_id){
+function clearMarkers(osmid){
   map.eachLayer(function(layer){
-    if(layer['options']["type"] === 'marker' && adr_id !== layer['options']['adr_id']){
+    if(layer['options']["type"] === 'marker' && osmid !== layer['options']['osmid']){
       map.removeLayer(layer);
     };
   });
@@ -124,62 +126,56 @@ function clearMarkers(adr_id){
 
 function fillMap(){
   var marker_group = new Array();
-  var data_fill = data_adr['features'].filter(a=>markers_screen.has(a["properties"]["adr_id"]));
+  var data_fill = data_adr.filter(a=>markers_screen.has(a["adr_id"]));
 
   data_fill.forEach(function(e) {
-    var search_txt = e['properties']['search_txt'];
-    var adr_id = e['properties']['adr_id'];
+    var search_txt = e['search_txt'];
+    var adr_id = e['adr_id'];
+    var osmid = e['osmid'];
 
     var marker_icon = L.divIcon({
-      html: `<i class="fa fa-map-marker fa-4x" adr_id="${adr_id}"></i>`,
+      html: `<i class="fa fa-map-marker fa-4x" adr_id="${adr_id}" osmid=${osmid}></i>`,
       iconSize: new L.Point(20, 20),
       className: 'map-marker'
     });
 
-    e['properties']['pointToLayer'] = function (feature, latlng) {return L.marker(latlng, {icon: marker_icon})};
-    e['properties']["type"] = 'marker';
+    e["type"] = 'marker';
+    e["icon"] = marker_icon;
 
-    var marker = L.geoJSON(e, e['properties']).on('click', markerOnClick);
-    marker_group.push(marker);
+    var marker = L.marker([e["lat"], e["lon"]], e).on('click', markerOnClick);
 
     marker.addTo(map);
+    marker_group.push(marker);
   });
 
-marker_group = new L.featureGroup(marker_group);
-map.flyTo([marker_group.getBounds().getCenter()["lat"], marker_group.getBounds().getCenter()["lng"]], 12);
-marker_group = null;
+  marker_group = new L.featureGroup(marker_group);
+  map.flyTo([marker_group.getBounds().getCenter()["lat"], marker_group.getBounds().getCenter()["lng"]], 12);
+  marker_group = null;
 };
 
 
 function addIsoc(osmid, time){
-  var isoc = data_isoc["features"].filter(i=>i["properties"]["osmid"]===osmid && i["properties"]["time"]===time);
-  var coord_fill = [[180, -90], [180, 90], [-180, 90], [-180, -90]];
-  var coord_pol = isoc[0]['geometry']['coordinates'][0].map(x => [x[1], x[0]]);
+  var isoc_sel = isoc.filter(i=>i["osmid"]===osmid && i["time"]===time);
+  isoc_sel = isoc_sel[0];
 
+  var coord_fill = [[180, -90], [180, 90], [-180, 90], [-180, -90]];
+  var coord_pol = isoc_sel['coord'].map(x => [x[1], x[0]]);
+  var pk = isoc_sel["pk"]
+
+  isoc_opt["pk"] = pk;
   isoc_opt["osmid"] = osmid;
   isoc_opt["time"] = time;
   isoc_opt["type"] = 'isochrone';
 
-  var center = data_adr["features"].filter(i=>i["properties"]["osmid"]===osmid);
-  center = center[0]['geometry']['coordinates'];
-  var center_lat = center[1];
-  var center_lng = center[0];
+  isoc_sel = L.polygon([coord_fill, coord_pol], isoc_opt);
+  isoc_sel.addTo(map);
 
-  isoc = L.polygon([coord_fill, coord_pol], isoc_opt);
-  isoc.addTo(map);
+  var bounds = L.polygon(coord_pol);
+  bounds = bounds.getBounds();
 
-  switch(time){
-    case 5:
-      zoom = 16;
-      break;
-    case 10:
-      zoom = 15;
-      break;
-    case 15:
-    zoom = 14;
-  };
+  map.fitBounds(bounds);
 
-  map.flyTo([center_lat, center_lng], zoom);
+  fillIsoc(pk, time);
 };
 
 
@@ -199,4 +195,39 @@ function updateIsoc(osmid, minutes){
       addIsoc(osmid, minutes);
     };
   });
+};
+
+
+function fillIsoc(pk, time){
+  map.eachLayer(function(layer){
+    if('type' in layer['options'] && layer['options']['type']==='data_point'){
+      map.removeLayer(layer);
+    };
+  });
+
+  if(data==='demographics'){
+    var data_fill = isoc_demographics.filter(i=>i["pk"]===pk);
+
+    data_fill.forEach((item, i) => {
+      var grid_id = item["id"];
+      grid = grid_demographics.filter(i=>i["id"]===grid_id);
+      grid = grid[0];
+
+      var size = grid["total"]*100;
+      var lat = grid["lat"];
+      var lon = grid["lon"];
+
+      var markerOptions = {
+        radius: size,
+        fillColor: "#000000",
+        weight: 0.0,
+        opacity: 0.0,
+        fillOpacity: 1.0,
+        type: "data_point",
+        time: time
+      };
+
+      L.circleMarker([lat, lon], markerOptions).addTo(map);
+    });
+  };
 };

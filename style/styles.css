@@ -114,24 +114,17 @@ h6 {
     margin: 0px;
 }
 
-.fa-close, .fa-circle, .fa-circle-o {
+.fa-close, .fa-circle-o, .fa-times-circle-o {
   cursor: pointer;
 }
 
-.fa-circle, .fa-circle-o {
+.fa-circle-o, .fa-times-circle-o {
   margin-right: 20px;
   color: #c3d4ca
 }
 
 a:hover {
   color: #c3d4ca;
-}
-
-.table {
-  color: transparent;
-  text-shadow: 0 0 5px rgba(1, 35, 60, 0.5);
-  /* color: #01233c; */
-  font-size: 12px;
 }
 
 .table thead th {
@@ -142,8 +135,38 @@ a:hover {
   border-top: 0px solid rgba(0, 0, 0, 0);
 }
 
-.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-  background-color: #c3d4ca;
+
+table {
+  position: relative;
+  border-collapse: collapse;
+}
+
+td, th {
+  font-size: 12px;
+  padding: 0.25em;
+  background-color: #ffffff;
+  color: #01233c;
+}
+
+thead th {
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+  top: 0;
+}
+
+thead th:first-child {
+  left: 0;
+  z-index: 1;
+  /* background-color: #ffffff; */
+}
+
+tbody th {
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+  left: 0;
+  /* color: #01233c;
+  background-color: #ffffff; */
+  border-right: 0px solid rgba(0, 0, 0, 0);
 }
 
 /*------------------------------- LEAFLET -------------------------------*/
@@ -196,7 +219,7 @@ a:hover {
   padding: 0px;
   margin: 0px;
   border: 0px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.2);
   position: absolute;
   z-index: 3;
   justify-content: center;
@@ -270,6 +293,22 @@ a:hover {
   border-radius: 12.5px;
   padding-left: 10px;
   padding-right: 10px;
+}
+
+.btn-request {
+  height: 20px;
+  width: 100px;
+  font-size: 10px;
+  background-color: #c3d4ca;
+  border: none;
+  color: #01233c;
+  text-align: center;
+  vertical-align: middle;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .btn-submit {
@@ -373,11 +412,12 @@ a:hover {
 }
 
 .custom-scrollbar-css {
-  overflow-y: auto;
+  overflow: auto;
 }
 
 .custom-scrollbar-css::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 .custom-scrollbar-css::-webkit-scrollbar-thumb {
@@ -401,6 +441,8 @@ a:hover {
   position: absolute;
   left: 155px;
   padding: 30px;
+  /* max-width: 500px;
+  max-height: 500px; */
 }
 
 .form-head {
@@ -420,13 +462,12 @@ a:hover {
 }
 
 .form-body {
-  height: 62px;
+  height: 42px;
   width: 100%;
   font-size: 14px;
   background-color: transparent;
   border: none;
   color: #01233c;
-  padding: 10px;
 }
 
 .form-body-align-middle {
@@ -445,6 +486,21 @@ a:hover {
   display: inline-block;
   border-radius: 15px;
   border: 3px solid #c3d4ca;
+}
+
+.table-wrapper {
+    overflow: scroll;
+    max-width: 500px;
+    max-height: 300px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.table-data {
+  color: transparent;
+  text-shadow: 0 0 5px rgba(1, 35, 60, 0.5);
+  /* color: #01233c; */
+  font-size: 12px;
 }
 
 /*------------------------------- IDS -------------------------------*/

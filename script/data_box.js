@@ -24,7 +24,7 @@ var data_sources = {
 var data_box = [];
 
 Object.keys(data_sources).forEach((item, i) => {
-  var id = 'btn-'+item.replace(' ', '');
+  var id = 'btn-'+item.replace(' ', '').toLowerCase();
   var txt = data_sources[item];
 
   if(i>2){
@@ -48,7 +48,7 @@ Object.keys(data_sources).forEach((item, i) => {
       </div>
       <br>
       <div class="row">
-        <div class="col-12"><p class="subscribe text-center">subscribe</p></div>
+        <div class="col-12"><button type="button" class="btn btn-request font-weight-bold">Request report!</button></div>
       </div>
     </div>
   </div>`

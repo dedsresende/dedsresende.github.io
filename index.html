@@ -89,6 +89,8 @@
           </div>
         </div>
 
+        <br>
+
         <div class="row form-head">Type of use</div>
         <div class="row form-body">
           <div class="col-5 text-right">
@@ -115,6 +117,8 @@
           </div>
         </div>
 
+        <br>
+
         <div class="row">
           <div class="col-12 text-center">
             <input type="email" class="form-control form-email-box font-weight-bold align-middle" placeholder="Type e-mail here" id="email">
@@ -122,6 +126,7 @@
         </div>
 
         <br>
+
         <div class="row">
           <div class="col-12 text-center">
             <button type="button" class="btn btn-submit font-weight-bold" id="submit">Submit</button>
@@ -143,22 +148,13 @@
       <div class="row">
 
         <div class="compare-box">
-          <!-- <p class="subscribe text-center">subscribe</p> -->
           <div class="row float-right"><i class="fa fa-close"></i></div>
-          <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>selected locations</th>
-                  <th>data a</th>
-                  <th>data b</th>
-                  <th>data c</th>
-                  <th>data d</th>
-                  <th>data e</th>
-                  <th>data f</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
+          <div class="table-wrapper custom-scrollbar-css">
+            <table class="table">
+                <thead></thead>
+                <tbody></tbody>
             </table>
+          </div>
         </div>
 
         <div class="col-6">
@@ -173,7 +169,7 @@
                 <button type="button" class="btn btn-menu font-weight-bold" id="btn-compare">Compare</button>
               </div>
               <div class="row">
-                <button type="button" class="btn btn-menu font-weight-bold" id="btn-discover">Discover</button>
+                <button type="button" class="btn btn-menu font-weight-bold disabled" id="btn-discover" data-toggle="tooltip" title="Coming soon!">Discover</button>
               </div>
             </div>
 
@@ -215,6 +211,9 @@
 
     <script src="script/data/data_adr.js"></script>
     <script src="script/data/data_isoc.js"></script>
+    <script src="script/data/databoard_demographics.js"></script>
+    <script src="script/data/grid_demographics.js"></script>
+    <script src="script/data/isoc_demographics.js"></script>
     <script src="script/data_box.js"></script>
     <script src="script/interact.js"></script>
     <script src="script/map.js"></script>
