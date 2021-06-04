@@ -6,7 +6,7 @@ var isoc_opt = {
   color: "#c3d4ca",
   weight: 3,
   opacity: 1,
-  fillOpacity: 0.2
+  fillOpacity: 0.6
 };
 var fill_map = false;
 var data;
