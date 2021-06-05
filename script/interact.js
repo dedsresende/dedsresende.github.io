@@ -9,13 +9,31 @@ var isoc_opt = {
   fillOpacity: 0.6
 };
 var fill_map = false;
-var data;
+var top_menu;
+var bottom_menu;
 
 
 function fillCompareBox(time){
+  $("thead").empty();
+  $("tbody").empty();
+
   var thead;
+  var st;
   var tbody = new Array();
   var data_fill = data_adr.filter(a=>markers_sel.has(a["adr_id"]));
+
+  switch (bottom_menu) {
+    case 'btn-demographics':
+      st = comparison_demographics;
+      break;
+    case 'btn-activities':
+      st = comparison_pois;
+      break;
+    case 'btn-realestate':
+      st = comparison_realestate;
+      break;
+  };
+
   data_fill.forEach((item, i) => {
     var adr = item["street_name"]+' '+item["street_number"]+', '+item["region"];
     var osmid = item["osmid"];
@@ -24,12 +42,15 @@ function fillCompareBox(time){
     stats = stats[0];
     var pk = stats["pk"];
 
-    stats = databoard_demographics.filter(i=>i["pk"]===pk);
-    stats = stats[0];
-    delete stats["pk"];
-    stats = {"selected places": adr, ...stats};
-    thead = stats;
-    tbody.push(stats);
+    stats = st.filter(i=>i["pk"]===pk);
+
+    if(stats.length>0){
+      stats = stats[0];
+      delete stats["pk"];
+      stats = {"selected places": adr, ...stats};
+      thead = stats;
+      tbody.push(stats);
+    };
   });
 
   thead = Object.keys(thead);
@@ -42,6 +63,7 @@ function fillCompareBox(time){
     </tr>
     `
   );
+
   tbody = tbody.map(e=>Object.values(e));
   tbody.forEach((row, idx) => {
     row_txt = new Array();
@@ -65,6 +87,8 @@ function fillCompareBox(time){
       `
     );
   });
+
+  $(".compare-box").fadeIn("slow");
 };
 
 
@@ -81,10 +105,11 @@ $(".form-search").on('keypress',function(e) {
 });
 
 
-$("#btn-explore,#btn-compare,#btn-discover").click(function(){
+$("#btn-explore,#btn-compare").click(function(){
   $(this).addClass("btn-menu-selected");
   var id_click = $(this).attr("id");
-  $("#btn-explore,#btn-compare,#btn-discover").each(function(){
+  top_menu = id_click;
+  $("#btn-explore,#btn-compare").each(function(){
     if($(this).attr("id")!=id_click){
       $(this).removeClass("btn-menu-selected");
     };
@@ -95,55 +120,56 @@ $("#btn-explore,#btn-compare,#btn-discover").click(function(){
 $("#btn-demographics,#btn-activities,#btn-realestate,#btn-humanflow,#btn-transaction,#btn-transport").click(function(){
   $(this).addClass("btn-menu-selected");
   var id_click = $(this).attr("id");
+  bottom_menu = id_click;
+
   $("#btn-demographics,#btn-activities,#btn-realestate,#btn-humanflow,#btn-transaction,#btn-transport").each(function(){
     if($(this).attr("id")!=id_click){
       $(this).removeClass("btn-menu-selected");
     };
   });
 
-  data = $(this).attr("id").replace('btn-', '').toLowerCase();
-
   $(".data-box").each(function(){$(this).fadeOut("slow")});
 
-  var adr_id = Array.from(markers_sel)[0];
-  adr_sel = data_adr.filter(i=>i["adr_id"]==adr_id);
-  adr_sel = adr_sel[0];
-  var osmid = adr_sel["osmid"];
+  if(top_menu==='btn-explore' && markers_sel.size===1){
+    var adr_id = Array.from(markers_sel)[0];
+    adr_sel = data_adr.filter(i=>i["adr_id"]==adr_id);
+    adr_sel = adr_sel[0];
+    var osmid = adr_sel["osmid"];
 
-  adr_sel = adr_sel["street_name"]+' '+adr_sel["street_number"]+', '+adr_sel["region"];
+    adr_sel = adr_sel["street_name"]+' '+adr_sel["street_number"]+', '+adr_sel["region"];
 
-  $(this).siblings().children().first().children().children().first().text(adr_sel);
-  $(this).siblings().fadeIn("slow");
+    $(this).siblings().children().first().children().children().first().text(adr_sel);
+    $(this).siblings().fadeIn("slow");
 
-  removeIsoc(osmid);
-  addIsoc(osmid, minutes);
-  clearMarkers(osmid);
+    removeIsoc(osmid);
+    addIsoc(osmid, minutes);
+    clearMarkers(osmid);
+  }else if(top_menu==='btn-compare' && markers_sel.size>1){
+    fillCompareBox(minutes);
+  };
 });
 
 
 $("#btn-explore").click(function(){
+  clearMap();
+  fillMap();
+
   if(markers_sel.size===1){
     $(".right-menu-bottom").fadeIn("slow");
   };
 });
 
 
-$("#btn-discover").click(function(){
-  $(".right-menu-bottom").fadeOut("slow");
-  clearMap();
-  fill_map = true;
-  $(".subscribe-page").fadeIn("slow");
-});
-
-
 $("#btn-compare").click(function(){
+  clearMap();
+  fillMap();
+
   if(markers_sel.size>1){
     $(".right-menu-bottom").fadeIn("slow");
     $(".left-menu-top").fadeOut("slow");
-    $(".compare-box").fadeIn("slow");
-    clearMap();
-    fill_map = true;
-    fillCompareBox(minutes);
+    // $(".compare-box").fadeIn("slow");
+    // fill_map = true;
+    // fillCompareBox(minutes);
   };
 });
 
@@ -216,6 +242,7 @@ $(".btn-request").click(function(){
   fill_map = true;
   $(".subscribe-page").fadeIn("slow");
 });
+
 
 $("#submit").click(function(){
   var email=$("#email").val();

@@ -28,22 +28,25 @@ function markerOnClick(marker){
 
   $(`i[osmid=${osmid}]`).toggleClass("map-marker-selected");
 
+  var adr_sel = Array.from(markers_sel);
+
   if($(`[osmid=${osmid}]`).hasClass("map-marker-selected")){
-    markers_sel.add(adr_id);
+    if(!adr_sel.includes(adr_id)){
+      markers_sel.add(adr_id);
 
-    $(".adr-table").append(
-      `
-      <div class="row" adr_id=${adr_id} osmid=${osmid}>
-        <div class="col-11 text-left">
-          <p class="font-weight-bold">${adr_lbl}</p>
+      $(".adr-table").append(
+        `
+        <div class="row" adr_id=${adr_id} osmid=${osmid}>
+          <div class="col-11 text-left">
+            <p class="font-weight-bold">${adr_lbl}</p>
+          </div>
+          <a class="col-1">
+            <i class="fa fa-close"></i>
+          </a>
         </div>
-        <a class="col-1">
-          <i class="fa fa-close"></i>
-        </a>
-      </div>
-      `
-    );
-
+        `
+      );
+    }
   }else{
     $(".adr-table").children(`[osmid=${osmid}]`).remove();
     markers_sel.delete(adr_id);
@@ -107,8 +110,12 @@ function removeMarker(adr_id){
 
 
 function clearMap(){
+  // $(".data-box").each(e=>$(this).fadeOut("slow"));
+  $(".data-box").each(function(){$(this).fadeOut("slow")});
+  $(".compare-box").fadeOut("slow");
+
   map.eachLayer(function(layer){
-    if(layer["options"]["type"] === 'marker' || layer["options"]["type"] === 'isochrone'){
+    if(layer["options"]["type"] === 'marker' || layer["options"]["type"] === 'isochrone' || layer["options"]["type"] === 'grid'){
       map.removeLayer(layer);
     };
   });
@@ -127,17 +134,26 @@ function clearMarkers(osmid){
 function fillMap(){
   var marker_group = new Array();
   var data_fill = data_adr.filter(a=>markers_screen.has(a["adr_id"]));
+  var adr_sel = Array.from(markers_sel);
 
   data_fill.forEach(function(e) {
     var search_txt = e['search_txt'];
     var adr_id = e['adr_id'];
     var osmid = e['osmid'];
 
-    var marker_icon = L.divIcon({
-      html: `<i class="fa fa-map-marker fa-4x" adr_id="${adr_id}" osmid=${osmid}></i>`,
-      iconSize: new L.Point(20, 20),
-      className: 'map-marker'
-    });
+    if(adr_sel.includes(adr_id)){
+      var marker_icon = L.divIcon({
+        html: `<i class="fa fa-map-marker fa-4x map-marker-selected" adr_id="${adr_id}" osmid=${osmid}></i>`,
+        iconSize: new L.Point(20, 20),
+        className: 'map-marker'
+      });
+    }else{
+      var marker_icon = L.divIcon({
+        html: `<i class="fa fa-map-marker fa-4x" adr_id="${adr_id}" osmid=${osmid}></i>`,
+        iconSize: new L.Point(20, 20),
+        className: 'map-marker'
+      });
+    };
 
     e["type"] = 'marker';
     e["icon"] = marker_icon;
@@ -199,35 +215,51 @@ function updateIsoc(osmid, minutes){
 
 
 function fillIsoc(pk, time){
+  var df;
+  var gr;
+
   map.eachLayer(function(layer){
     if('type' in layer['options'] && layer['options']['type']==='data_point'){
       map.removeLayer(layer);
     };
   });
 
-  if(data==='demographics'){
-    var data_fill = isoc_demographics.filter(i=>i["pk"]===pk);
-
-    data_fill.forEach((item, i) => {
-      var grid_id = item["id"];
-      grid = grid_demographics.filter(i=>i["id"]===grid_id);
-      grid = grid[0];
-
-      var size = grid["total"]*100;
-      var lat = grid["lat"];
-      var lon = grid["lon"];
-
-      var markerOptions = {
-        radius: size,
-        fillColor: "#000000",
-        weight: 0.0,
-        opacity: 0.0,
-        fillOpacity: 1.0,
-        type: "data_point",
-        time: time
-      };
-
-      L.circleMarker([lat, lon], markerOptions).addTo(map);
-    });
+  switch (bottom_menu) {
+    case 'btn-demographics':
+      df = isoc_demographics;
+      gr = grid_demographics;
+      break;
+    case 'btn-activities':
+      df = isoc_pois;
+      gr = grid_pois;
+      break;
+    case 'btn-realestate':
+      df = isoc_realestate;
+      gr = grid_realestate;
+      break;
   };
+
+  var data_fill = df.filter(i=>i["pk"]===pk);
+
+  data_fill.forEach((item, i) => {
+    var grid_id = item["id"];
+    grid = gr.filter(i=>i["id"]===grid_id);
+    grid = grid[0];
+
+    var size = grid["total"]*100;
+    var lat = grid["lat"];
+    var lon = grid["lon"];
+
+    var markerOptions = {
+      radius: size,
+      fillColor: "#000000",
+      weight: 0.0,
+      opacity: 0.0,
+      fillOpacity: 1.0,
+      type: "grid",
+      time: time
+    };
+
+    L.circleMarker([lat, lon], markerOptions).addTo(map);
+  });
 };
