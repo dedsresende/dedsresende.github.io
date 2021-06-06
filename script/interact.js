@@ -264,9 +264,14 @@ $("#submit").click(function(){
 
   Email.send({
     Host : "smtp.elasticemail.com",
-    SecureToken : "ab8a208a-bfa3-4f0b-aa98-8c7be8669fb9",
-    To : "dedsresende@gmail.com",
-    From : "dedsresende@gmail.com",
+    Username : "sales@datahood.co",
+    Password : "45F39C55545E9492A38395EA2A4D0BA9192F",
+    To : 'sales@datahood.co',
+    From : "sales@datahood.co",
+    // Host : "smtp.elasticemail.com",
+    // SecureToken : "ab8a208a-bfa3-4f0b-aa98-8c7be8669fb9",
+    // To : "dedsresende@gmail.com",
+    // From : "dedsresende@gmail.com",
     Subject : "DATAHOOD data request",
     Body : info
   }).then(
