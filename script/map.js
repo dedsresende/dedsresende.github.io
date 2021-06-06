@@ -17,6 +17,26 @@ function addMap(){
 
     $(".leaflet-control-container").children().removeClass("leaflet-top leaflet-left");
     $(".leaflet-control-container").children().addClass("leaflet-bottom leaflet-right");
+
+    window.map.on('zoomend', function() {
+        var currentZoom = map.getZoom();
+
+        map.eachLayer(function(layer){
+          if(layer["options"]["type"] === 'grid'){
+            var size = layer.getRadius();
+
+            if(size>(currentZoom*2)){
+              size = currentZoom*2;
+            }else if(size<(currentZoom/3)){
+              size = currentZoom/3;
+            };
+
+            layer.setRadius(size);
+          };
+        });
+    });
+
+    return map
 };
 
 
@@ -291,6 +311,13 @@ function fillIsoc(pk, time){
     var size = grid["total"]*100;
     var lat = grid["lat"];
     var lon = grid["lon"];
+    var currentZoom = map.getZoom();
+
+    if(size>(currentZoom*2)){
+      size = currentZoom*2;
+    }else if(size<(currentZoom/3)){
+      size = currentZoom/3;
+    };
 
     var markerOptions = {
       radius: size,

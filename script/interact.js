@@ -256,27 +256,25 @@ $("#submit").click(function(){
   var email=$("#email").val();
   var info = [email];
 
-  $(".fa-circle").each(function(){
+  $(".fa-times-circle-o").each(function(){
     info.push($(this).parents().eq(0).siblings().children().text());
   });
 
   info = info.join(', ')
 
+
   Email.send({
-    Host : "smtp.elasticemail.com",
-    Username : "sales@datahood.co",
-    Password : "45F39C55545E9492A38395EA2A4D0BA9192F",
-    To : 'sales@datahood.co',
-    From : "sales@datahood.co",
-    // Host : "smtp.elasticemail.com",
-    // SecureToken : "ab8a208a-bfa3-4f0b-aa98-8c7be8669fb9",
-    // To : "dedsresende@gmail.com",
-    // From : "dedsresende@gmail.com",
-    Subject : "DATAHOOD data request",
-    Body : info
-  }).then(
-    message => alert("Thanks for contacting DATAHOOD!")
-  );
+    Host: "smtp.gmail.com",
+    Username: "sales@datahood.co",
+    Password: "9KCx%B6QKc3T",
+    To: 'sales@datahood.co',
+    From: "sales@datahood.co",
+    Subject: "DATAHOOD data request",
+    Body: info,
+  })
+    .then(function (message) {
+      console.log("mail sent successfully");
+    });
 
   $(".subscribe-page").fadeOut("slow");
   fillMap();
