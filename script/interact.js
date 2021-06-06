@@ -14,11 +14,18 @@ var bottom_menu;
 
 
 function fillCompareBox(time){
+  $(".table-wrapper").css("maxWidth", $('.mapBox').width()-350);
+  $(".table-wrapper").css("maxHeight", $('.mapBox').height()-200);
+
   $("thead").empty();
   $("tbody").empty();
 
   var thead;
   var st;
+  var adr;
+  var osmid;
+  var stats;
+  var pk;
   var tbody = new Array();
   var data_fill = data_adr.filter(a=>markers_sel.has(a["adr_id"]));
 
@@ -35,12 +42,12 @@ function fillCompareBox(time){
   };
 
   data_fill.forEach((item, i) => {
-    var adr = item["street_name"]+' '+item["street_number"]+', '+item["region"];
-    var osmid = item["osmid"];
+    adr = item["street_name"]+' '+item["street_number"]+', '+item["region"];
+    osmid = item["osmid"];
 
-    var stats = isoc.filter(i=>i["osmid"]===osmid && i["time"]===time);
+    stats = isoc.filter(i=>i["osmid"]===osmid && i["time"]===time);
     stats = stats[0];
-    var pk = stats["pk"];
+    pk = stats["pk"];
 
     stats = st.filter(i=>i["pk"]===pk);
 
@@ -120,6 +127,9 @@ $("#btn-explore,#btn-compare").click(function(){
 $("#btn-demographics,#btn-activities,#btn-realestate,#btn-humanflow,#btn-transaction,#btn-transport").click(function(){
   $(this).addClass("btn-menu-selected");
   var id_click = $(this).attr("id");
+  var adr_sel = Array.from(markers_sel);
+  var adr_id;
+  var osmid;
   bottom_menu = id_click;
 
   $("#btn-demographics,#btn-activities,#btn-realestate,#btn-humanflow,#btn-transaction,#btn-transport").each(function(){
@@ -131,10 +141,10 @@ $("#btn-demographics,#btn-activities,#btn-realestate,#btn-humanflow,#btn-transac
   $(".data-box").each(function(){$(this).fadeOut("slow")});
 
   if(top_menu==='btn-explore' && markers_sel.size===1){
-    var adr_id = Array.from(markers_sel)[0];
+    adr_id = adr_sel[0];
     adr_sel = data_adr.filter(i=>i["adr_id"]==adr_id);
     adr_sel = adr_sel[0];
-    var osmid = adr_sel["osmid"];
+    osmid = adr_sel["osmid"];
 
     adr_sel = adr_sel["street_name"]+' '+adr_sel["street_number"]+', '+adr_sel["region"];
 
@@ -144,6 +154,7 @@ $("#btn-demographics,#btn-activities,#btn-realestate,#btn-humanflow,#btn-transac
     removeIsoc(osmid);
     addIsoc(osmid, minutes);
     clearMarkers(osmid);
+
   }else if(top_menu==='btn-compare' && markers_sel.size>1){
     fillCompareBox(minutes);
   };
@@ -167,9 +178,6 @@ $("#btn-compare").click(function(){
   if(markers_sel.size>1){
     $(".right-menu-bottom").fadeIn("slow");
     $(".left-menu-top").fadeOut("slow");
-    // $(".compare-box").fadeIn("slow");
-    // fill_map = true;
-    // fillCompareBox(minutes);
   };
 });
 

@@ -7,7 +7,6 @@ function addMap(){
 
     window.map = L.map('map', {
         maxBounds:[[54.53974545725038, 24.998942172068308],[54.83504235452024, 25.48508717852184]],
-        // zoomControl:false,
         maxZoom:20,
         minZoom:10,
         }).setView([54.678333958732594, 25.28688040489327], 8);
@@ -110,7 +109,6 @@ function removeMarker(adr_id){
 
 
 function clearMap(){
-  // $(".data-box").each(e=>$(this).fadeOut("slow"));
   $(".data-box").each(function(){$(this).fadeOut("slow")});
   $(".compare-box").fadeOut("slow");
 
@@ -199,6 +197,8 @@ function removeIsoc(osmid){
   map.eachLayer(function(layer){
     if('osmid' in layer['options'] && layer['options']['type']==='isochrone' && osmid === layer['options']['osmid']){
       map.removeLayer(layer);
+    }else if(layer["options"]["type"] === 'grid'){
+      map.removeLayer(layer);
     };
   });
 };
@@ -209,6 +209,8 @@ function updateIsoc(osmid, minutes){
     if('osmid' in layer['options'] && layer['options']['osmid']===osmid){
       removeIsoc(osmid);
       addIsoc(osmid, minutes);
+    }else if(layer["options"]["type"] === 'grid'){
+      map.removeLayer(layer);
     };
   });
 };
@@ -217,6 +219,13 @@ function updateIsoc(osmid, minutes){
 function fillIsoc(pk, time){
   var df;
   var gr;
+  var dbf_val_1;
+  var dbf_txt_1;
+  var dbf_val_2;
+  var dbf_txt_2;
+  var dbf_val_3;
+  var dbf_txt_3;
+  var stats;
 
   map.eachLayer(function(layer){
     if('type' in layer['options'] && layer['options']['type']==='data_point'){
@@ -228,18 +237,51 @@ function fillIsoc(pk, time){
     case 'btn-demographics':
       df = isoc_demographics;
       gr = grid_demographics;
+      stats = databoard_demographics.filter(i=>i["pk"]===pk);
+      stats = stats[0];
+      dbf_val_1 = stats["total"];
+      dbf_txt_1 = "total inhabitants";
+      dbf_val_2 = Math.round(Number(stats["female_perc"])).toString()+"%";
+      dbf_txt_2 = "women";
+      dbf_val_3 = Math.round(Number(stats["male_perc"])).toString()+"%";
+      dbf_txt_3 = "man";
       break;
     case 'btn-activities':
       df = isoc_pois;
       gr = grid_pois;
+      db = databoard_pois;
+      stats = databoard_pois.filter(i=>i["pk"]===pk);
+      stats = stats[0];
+      keysSorted = Object.keys(stats).sort(function(a,b){return stats[a]-stats[b]});
+      dbf_val_1 = stats["total"];
+      dbf_txt_1 = "total of places";
+      dbf_val_2 = stats[keysSorted[keysSorted.length-3]];
+      dbf_txt_2 = `${keysSorted[keysSorted.length-3]}`;
+      dbf_val_3 = stats[keysSorted[keysSorted.length-4]];
+      dbf_txt_3 = `${keysSorted[keysSorted.length-4]}`;
       break;
     case 'btn-realestate':
       df = isoc_realestate;
       gr = grid_realestate;
+      stats = databoard_realestate.filter(i=>i["pk"]===pk);
+      stats = stats[0];
+      dbf_val_1 = stats["total"];
+      dbf_txt_1 = "total of offers";
+      dbf_val_2 = Math.round(Number(stats["total_perc"])).toString()+"%";
+      dbf_txt_2 = "among all offers in Vilnius";
+      dbf_val_3 = Math.round(Number(stats["price_sqm_avg"])).toString()+"€/m²";
+      dbf_txt_3 = "mean price/sqm";
       break;
   };
 
   var data_fill = df.filter(i=>i["pk"]===pk);
+
+  $(`[data_id="${bottom_menu}"][data="dbf-val-1"]`).text(dbf_val_1);
+  $(`[data_id="${bottom_menu}"][data="dbf-txt-1"]`).text(dbf_txt_1);
+  $(`[data_id="${bottom_menu}"][data="dbf-val-2"]`).text(dbf_val_2);
+  $(`[data_id="${bottom_menu}"][data="dbf-txt-2"]`).text(dbf_txt_2);
+  $(`[data_id="${bottom_menu}"][data="dbf-val-3"]`).text(dbf_val_3);
+  $(`[data_id="${bottom_menu}"][data="dbf-txt-3"]`).text(dbf_txt_3);
 
   data_fill.forEach((item, i) => {
     var grid_id = item["id"];

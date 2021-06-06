@@ -26,9 +26,39 @@ var data_box = [];
 Object.keys(data_sources).forEach((item, i) => {
   var id = 'btn-'+item.replace(' ', '').toLowerCase();
   var txt = data_sources[item];
+  var data_box_fill;
 
   if(i>2){
     item = `${item}<a><i class="fa fa-lock float-right"></i></a>`
+  };
+
+  var dbf1 = `
+  <div class="row"><div class="col-12 data-box-text"><h4 class="hdb" data_id="${id}" data="dbf-val-1">XXX</h4><h6 data_id="${id}" data="dbf-txt-1">blablablabla</h6></div></div>
+  <div class="row"><div class="col-12 data-box-text"><h4 class="hdb" data_id="${id}" data="dbf-val-2">XXX</h4><h6 data_id="${id}" data="dbf-txt-2">blablablabla</h6></div></div>
+  <div class="row"><div class="col-12 data-box-text"><h4 class="hdb" data_id="${id}" data="dbf-val-3">XXX</h4><h6 data_id="${id}" data="dbf-txt-3">blablablabla</h6></div></div>
+  `
+
+  var dbf2 = `<div class="row"><div class="col-12 data-box-text">${txt}</div></div>`
+
+  switch (id) {
+    case 'btn-demographics':
+      data_box_fill = dbf1;
+      break;
+    case 'btn-activities':
+      data_box_fill = dbf1;
+      break;
+    case 'btn-realestate':
+      data_box_fill = dbf1;
+      break;
+    case 'btn-humanflow':
+      data_box_fill = dbf2
+      break;
+    case 'btn-realestate':
+      data_box_fill = dbf2
+      break;
+    case 'btn-realestate':
+      data_box_fill = dbf2
+      break;
   };
 
   var div = `<div class="row">
@@ -43,9 +73,7 @@ Object.keys(data_sources).forEach((item, i) => {
         </div>
       </div>
       <br>
-      <div class="row">
-        <div class="col-12 data-box-text">${txt}</div>
-      </div>
+      ${data_box_fill}
       <br>
       <div class="row">
         <div class="col-12"><button type="button" class="btn btn-request font-weight-bold">Request report!</button></div>

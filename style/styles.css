@@ -39,6 +39,7 @@ p {
 
 h4 {
   color: #01233c;
+  display: inline;
 }
 
 h5 {
@@ -53,6 +54,7 @@ h6 {
   color: #01233c;
   margin: 0px;
   padding: 0px;
+  display: inline;
 }
 
 /*------------------------------- BOOTSTRAP -------------------------------*/
@@ -490,8 +492,6 @@ tbody th {
 
 .table-wrapper {
     overflow: scroll;
-    max-width: 500px;
-    max-height: 300px;
     margin: 0 auto;
     position: relative;
 }
@@ -499,8 +499,18 @@ tbody th {
 .table-data {
   color: transparent;
   text-shadow: 0 0 5px rgba(1, 35, 60, 0.5);
-  /* color: #01233c; */
   font-size: 12px;
+}
+
+.hdb {
+  font-size: 18px;
+  font-weight: bold;
+  color: #c3d4ca;
+  margin: 0px;
+  padding: 0px;
+  display: inline;
+  margin-left: 14px;
+  margin-right: 14px;
 }
 
 /*------------------------------- IDS -------------------------------*/
