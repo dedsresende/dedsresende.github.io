@@ -107,6 +107,7 @@ $(".form-search").on('keypress',function(e) {
       $(".search-page").fadeOut("slow");
       $(".right-menu-top").fadeIn("slow");
       $(".left-menu-top").fadeIn("slow");
+      $("#guide-txt").text("Select one or more locations");
     };
   };
 });
@@ -151,12 +152,21 @@ $("#btn-demographics,#btn-activities,#btn-realestate,#btn-humanflow,#btn-transac
     $(this).siblings().children().first().children().children().first().text(adr_sel);
     $(this).siblings().fadeIn("slow");
 
+    $("#guide-txt").text(`Exploring ${adr_sel}`);
+    $(".legend").fadeIn("slow");
+
     removeIsoc(osmid);
     addIsoc(osmid, minutes);
     clearMarkers(osmid);
 
+  }else if(top_menu==='btn-explore' && markers_sel.size>1){
+    $("#guide-txt").text("Select just one location to explore");
+  }else if(top_menu==='btn-explore' && markers_sel.size===0){
+    $("#guide-txt").text("Select one location to explore");
   }else if(top_menu==='btn-compare' && markers_sel.size>1){
     fillCompareBox(minutes);
+  }else if(top_menu==='btn-compare' && markers_sel.size<2){
+    $("#guide-txt").text("Select two or more locations to compare");
   };
 });
 
@@ -255,6 +265,14 @@ $(".btn-request").click(function(){
 $("#submit").click(function(){
   var email=$("#email").val();
   var info = [email];
+  var adr;
+
+  var adr_sel = Array.from(markers_sel);
+  adr_sel.forEach((item, i) => {
+    adr = item.toString();
+    info.push(adr);
+  });
+
 
   $(".fa-times-circle-o").each(function(){
     info.push($(this).parents().eq(0).siblings().children().text());

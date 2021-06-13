@@ -1,6 +1,6 @@
 function addMap(){
     var cartodb = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
-      attribution: 'DATAHOOD',
+      attribution: '',
       subdomains: 'abcd',
       maxZoom: 20
     });
@@ -131,6 +131,8 @@ function removeMarker(adr_id){
 function clearMap(){
   $(".data-box").each(function(){$(this).fadeOut("slow")});
   $(".compare-box").fadeOut("slow");
+  $(".legend").fadeOut("slow");
+  $("#guide-txt").text("Select one or more locations");
 
   map.eachLayer(function(layer){
     if(layer["options"]["type"] === 'marker' || layer["options"]["type"] === 'isochrone' || layer["options"]["type"] === 'grid'){
@@ -245,6 +247,9 @@ function fillIsoc(pk, time){
   var dbf_txt_2;
   var dbf_val_3;
   var dbf_txt_3;
+  var legend_txt;
+  var legend_l_val;
+  var legend_s_val;
   var stats;
 
   map.eachLayer(function(layer){
@@ -265,6 +270,9 @@ function fillIsoc(pk, time){
       dbf_txt_2 = "women";
       dbf_val_3 = Math.round(Number(stats["male_perc"])).toString()+"%";
       dbf_txt_3 = "man";
+      legend_txt = "people";
+      legend_l_val = stats["total"];
+      legend_s_val = stats["total"];
       break;
     case 'btn-activities':
       df = isoc_pois;
@@ -279,6 +287,9 @@ function fillIsoc(pk, time){
       dbf_txt_2 = `${keysSorted[keysSorted.length-3]}`;
       dbf_val_3 = stats[keysSorted[keysSorted.length-4]];
       dbf_txt_3 = `${keysSorted[keysSorted.length-4]}`;
+      legend_txt = "places";
+      legend_l_val = stats["total"];
+      legend_s_val = stats["total"];
       break;
     case 'btn-realestate':
       df = isoc_realestate;
@@ -291,8 +302,14 @@ function fillIsoc(pk, time){
       dbf_txt_2 = "among all offers in Vilnius";
       dbf_val_3 = Math.round(Number(stats["price_sqm_avg"])).toString()+"€/m²";
       dbf_txt_3 = "mean price/sqm";
+      legend_txt = "offers";
+      legend_l_val = stats["total"];
+      legend_s_val = stats["total"];
       break;
   };
+
+  $(".legend-l").attr("title", `${legend_l_val} ${legend_txt}`);
+  $(".legend-s").attr("title", `${legend_s_val} ${legend_txt}`);
 
   var data_fill = df.filter(i=>i["pk"]===pk);
 

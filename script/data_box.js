@@ -1,7 +1,17 @@
 var data_sources = {
-  "Demographics": 'Here comes a beautiful chart',
-  "Activities": 'Here comes a beautiful chart',
-  "Real estate": 'Here comes a beautiful chart',
+  "Demographics": `
+  Census data indicates amounts of people, age, level of education,
+  type of income, and languages spoken.
+  `,
+  "Activities": `
+  Activities data identifies business and public services within the selected area.
+  Full access will give you detailed image of what kind of competitors
+  or attractors are located in the selected area.
+  `,
+  "Real estate": `
+  Real estate data gives you a clear image of rental prices,
+  change in time and vacancy for commercial type of listings.
+  `,
   "Human flow": `
   Human mobility data shows human flow in near real time to identify human
   activities within the selected area, identify modes of transport,
@@ -23,6 +33,13 @@ var data_sources = {
 };
 var data_box = [];
 
+var dist_div = `
+<div class="row">
+  <p>data layers:</p>
+</div>
+`
+$(".right-menu-bottom").append(dist_div);
+
 Object.keys(data_sources).forEach((item, i) => {
   var id = 'btn-'+item.replace(' ', '').toLowerCase();
   var txt = data_sources[item];
@@ -33,6 +50,8 @@ Object.keys(data_sources).forEach((item, i) => {
   };
 
   var dbf1 = `
+  <div class="row"><div class="col-12 data-box-text">${txt}</div></div>
+  <br>
   <div class="row"><div class="col-12 data-box-text"><h4 class="hdb" data_id="${id}" data="dbf-val-1">XXX</h4><h6 data_id="${id}" data="dbf-txt-1">blablablabla</h6></div></div>
   <div class="row"><div class="col-12 data-box-text"><h4 class="hdb" data_id="${id}" data="dbf-val-2">XXX</h4><h6 data_id="${id}" data="dbf-txt-2">blablablabla</h6></div></div>
   <div class="row"><div class="col-12 data-box-text"><h4 class="hdb" data_id="${id}" data="dbf-val-3">XXX</h4><h6 data_id="${id}" data="dbf-txt-3">blablablabla</h6></div></div>
