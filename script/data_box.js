@@ -61,11 +61,55 @@ Object.keys(data_sources).forEach((item, i) => {
 
   switch (id) {
     case 'btn-demographics':
-      data_box_fill = dbf1;
+      data_box_fill = `
+      <div class="row"><div class="col-12 data-box-text">${txt}</div></div>
+      <br>
+      <div class="row">
+        <div class="col-3 data-box-val">
+          <h4 class="hdb" data_id="btn-demographics" data="dbf-val-1">XXX</h4>
+        </div>
+        <div class="col-6 data-box-txt">
+          <p class="font-weight-bold text-left" data_id="btn-demographics" data="dbf-txt-1">of Vilnius population lives in this area.</p>
+        </div>
+      </div>
+      <br>
+      <div class="row"><div class="col-12" id="pie-chart"></div></div>
+      `;
       break;
     case 'btn-activities':
-      data_box_fill = dbf1;
-      break;
+    data_box_fill = `
+    <div class="row"><div class="col-12 data-box-text">${txt}</div></div>
+    <br>
+    <div class="row data-row">
+      <div class="data-box-val">
+        <h4 class="hdb" data_id="btn-activities" data="dbf-val-1">XXX</h4>
+      </div>
+      <div class="data-box-txt">
+        <p class="font-weight-bold text-left" data_id="btn-activities" data="dbf-txt-1">activities</p>
+      </div>
+    </div>
+    <br>
+    <div class="row data-row">
+      <div class="data-box-val">
+        <h4 class="hdb" data_id="btn-activities" data="dbf-val-2">XXX</h4>
+      </div>
+      <div class="data-box-txt">
+        <p class="font-weight-bold text-left" data_id="btn-activities" data="dbf-txt-2">activities</p>
+      </div>
+    </div>
+    <br>
+    <div class="row data-row">
+      <div class="data-box-val">
+        <h4 class="hdb" data_id="btn-activities" data="dbf-val-3">XXX</h4>
+      </div>
+      <div class="data-box-txt">
+        <p class="font-weight-bold text-left" data_id="btn-activities" data="dbf-txt-3">activities</p>
+      </div>
+    </div>
+    <br>
+
+    `;
+    break;
     case 'btn-realestate':
       data_box_fill = dbf1;
       break;
