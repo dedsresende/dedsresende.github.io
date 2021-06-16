@@ -47,9 +47,11 @@ function fillCompareBox(time){
 
     stats = isoc.filter(i=>i["osmid"]===osmid && i["time"]===time);
     stats = stats[0];
+    console.log(">>>>>>>> ID FILTRADOS", stats);
     pk = stats["pk"];
 
     stats = st.filter(i=>i["pk"]===pk);
+    console.log(`>>>>>>>> JSON COM DADOS POR ID ${pk}`, stats);
 
     if(stats.length>0){
       stats = stats[0];
@@ -107,7 +109,7 @@ $(".form-search").on('keypress',function(e) {
       $(".search-page").fadeOut("slow");
       $(".right-menu-top").fadeIn("slow");
       $(".left-menu-top").fadeIn("slow");
-      $("#guide-txt").text("Select one or more locations");
+      $("#guide-txt").text("Select one location to explore or select more than one location to compare them:");
     };
   };
 });
@@ -165,6 +167,7 @@ $("#btn-demographics,#btn-activities,#btn-realestate,#btn-humanflow,#btn-transac
     $("#guide-txt").text("Select one location to explore");
   }else if(top_menu==='btn-compare' && markers_sel.size>1){
     fillCompareBox(minutes);
+    $(".left-menu-top").fadeOut("slow");
   }else if(top_menu==='btn-compare' && markers_sel.size<2){
     $("#guide-txt").text("Select two or more locations to compare");
   };
@@ -187,7 +190,6 @@ $("#btn-compare").click(function(){
 
   if(markers_sel.size>1){
     $(".right-menu-bottom").fadeIn("slow");
-    $(".left-menu-top").fadeOut("slow");
   };
 });
 
@@ -205,7 +207,9 @@ $(".btn-dist").click(function(){
   adr_sel = adr_sel[0];
   var osmid_sel = adr_sel['osmid'];
 
-  updateIsoc(osmid_sel, minutes);
+  if(top_menu==='btn-explore'){
+    updateIsoc(osmid_sel, minutes);
+  };
 });
 
 
@@ -239,6 +243,7 @@ $(".right-menu-bottom").on("click", "i.fa-close", function(){
 
 $(".compare-box").on("click", "i.fa-close", function(){
   $(".compare-box").fadeOut("slow");
+  $(".left-menu-top").fadeIn("slow");
   fillMap();
 });
 

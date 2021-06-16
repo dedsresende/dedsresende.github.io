@@ -1,34 +1,30 @@
 var data_sources = {
   "Demographics": `
-  Census data indicates amounts of people, age, level of education,
-  type of income, and languages spoken.
+  Census data indicates the amount of people and gender distribution.
+  <br>
+  Full access gives you average age, level of education, type of income and languages spoken.
   `,
   "Activities": `
-  Activities data identifies business and public services within the selected area.
-  Full access will give you detailed image of what kind of competitors
-  or attractors are located in the selected area.
+  Activities data identifies businesses, competitors and public services within the selected area.
+  <br>
+  Full access will give you  detailed image of different competitors or attractors,
+  their types and locations in the area.
   `,
   "Real estate": `
   Real estate data gives you a clear image of rental prices,
   change in time and vacancy for commercial type of listings.
+  <br>
+  Full access give you a detailed locations and information for the selected area.
   `,
   "Human flow": `
-  Human mobility data shows human flow in near real time to identify human
-  activities within the selected area, identify modes of transport,
-  most active times, and many more aspects.
-  <br><br>
-  This dataset will give you essential insights to make decisions less risky.
+  Human flow data shows potential customers to identify the most busy locations
+  within selected area at different times and locations they come from (place of origin).
   `,
   "Transaction": `
-  Transaction data shows the expenditure and types of spendings in physical
-  locations within the selected area.
-  <br><br>
-  This dataset will help you determine possible revenues for your new locations,
-  or identify loss revenue streams in existing locations.
+  Transaction data allows you to see the average spending within the selected area in time.
   `,
   "Transport": `
-  Transport data combines real-time traffic from public, private and shared
-  modes of transport.
+  Transport data allows you to see the intensity of traffic within the selected area in time.
   `
 };
 var data_box = [];
@@ -76,49 +72,67 @@ Object.keys(data_sources).forEach((item, i) => {
       <div class="row"><div class="col-12" id="pie-chart"></div></div>
       `;
       break;
-    case 'btn-activities':
-    data_box_fill = `
-    <div class="row"><div class="col-12 data-box-text">${txt}</div></div>
-    <br>
-    <div class="row data-row">
-      <div class="data-box-val">
-        <h4 class="hdb" data_id="btn-activities" data="dbf-val-1">XXX</h4>
-      </div>
-      <div class="data-box-txt">
-        <p class="font-weight-bold text-left" data_id="btn-activities" data="dbf-txt-1">activities</p>
-      </div>
-    </div>
-    <br>
-    <div class="row data-row">
-      <div class="data-box-val">
-        <h4 class="hdb" data_id="btn-activities" data="dbf-val-2">XXX</h4>
-      </div>
-      <div class="data-box-txt">
-        <p class="font-weight-bold text-left" data_id="btn-activities" data="dbf-txt-2">activities</p>
-      </div>
-    </div>
-    <br>
-    <div class="row data-row">
-      <div class="data-box-val">
-        <h4 class="hdb" data_id="btn-activities" data="dbf-val-3">XXX</h4>
-      </div>
-      <div class="data-box-txt">
-        <p class="font-weight-bold text-left" data_id="btn-activities" data="dbf-txt-3">activities</p>
-      </div>
-    </div>
-    <br>
 
-    `;
-    break;
-    case 'btn-realestate':
-      data_box_fill = dbf1;
+    case 'btn-activities':
+      data_box_fill = `
+      <div class="row"><div class="col-12 data-box-text">${txt}</div></div>
+      <br>
+      <div class="row data-row">
+        <div class="data-box-val">
+          <h4 class="hdb" data_id="btn-activities" data="dbf-val-1">XXX</h4>
+        </div>
+        <div class="data-box-txt">
+          <p class="font-weight-bold text-left" data_id="btn-activities" data="dbf-txt-1">activities</p>
+        </div>
+      </div>
+      <br>
+      <div class="row data-row">
+        <div class="data-box-val">
+          <h4 class="hdb" data_id="btn-activities" data="dbf-val-2">XXX</h4>
+        </div>
+        <div class="data-box-txt">
+          <p class="font-weight-bold text-left" data_id="btn-activities" data="dbf-txt-2">activities</p>
+        </div>
+      </div>
+      <br>
+      <div class="row data-row">
+        <div class="data-box-val">
+          <h4 class="hdb" data_id="btn-activities" data="dbf-val-3">XXX</h4>
+        </div>
+        <div class="data-box-txt">
+          <p class="font-weight-bold text-left" data_id="btn-activities" data="dbf-txt-3">activities</p>
+        </div>
+      </div>
+      <br>
+
+      `;
       break;
+
+    case 'btn-realestate':
+      data_box_fill = `
+      <div class="row"><div class="col-12 data-box-text">${txt}</div></div>
+      <br>
+      <div class="row"><div class="col-12" id="bar-chart"></div></div>
+      <br>
+      <div class="row">
+        <div class="data-box-val">
+          <h4 class="hdb" data_id="btn-realestate" data="dbf-val-1">XXX</h4>
+        </div>
+        <div class="data-box-txt">
+          <p class="font-weight-bold text-left" data_id="btn-realestate" data="dbf-txt-1">total available<br>rental listings<br>in the area.</p>
+        </div>
+      </div>
+      `;
+      break;
+
     case 'btn-humanflow':
       data_box_fill = dbf2
       break;
+
     case 'btn-realestate':
       data_box_fill = dbf2
       break;
+
     case 'btn-realestate':
       data_box_fill = dbf2
       break;

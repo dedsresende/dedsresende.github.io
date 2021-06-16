@@ -253,6 +253,8 @@ tbody th {
 .logo {
   height: auto;
   width: 150px;
+  pointer-events: all;
+  cursor: pointer;
 }
 
 .right-menu {
@@ -447,6 +449,7 @@ tbody th {
   position: absolute;
   left: 155px;
   padding: 30px;
+  pointer-events: all;
 }
 
 .form-head {
@@ -524,30 +527,46 @@ tbody th {
   height: 50px;
   border-radius: 25px;
   border: 2px solid #000000;
-  z-index: 2;
   position: absolute;
   bottom: 0;
   right: 0;
-  margin-right: 50px;
-  margin-bottom: 10px;
+  margin-right: 80px;
 }
 
 .legend-s {
   width: 20px;
   height: 20px;
   border-radius: 10px;
-  /* border: 2px solid #000000; */
   background-color: #000000;
-  z-index: 2;
   position: absolute;
   bottom: 0;
   right: 0;
-  margin-right: 65px;
-  margin-bottom: 10px;
+  margin-right: 95px;
 }
 
 .legend {
+  width: 150px;
+  height: 50px;
   display: none;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: 50px;
+  margin-bottom: 10px;
+  z-index: 2;
+}
+
+.legend-txt {
+  width: 50%;
+  height: 100%;
+  float: left;
+  font-size: 12px;
+}
+
+.legend-symbol {
+  width: 50%;
+  height: 100%;
+  float: left;
 }
 
 .data-box-val {
@@ -597,6 +616,21 @@ tbody th {
 }
 
 #pie-chart {
-  height: 150px;
+  height: 100px;
   width: 280px;
+}
+
+#bar-chart {
+  height: 100px;
+  width: 280px;
+}
+
+#legend-s {
+  position: absolute;
+  bottom: 0
+}
+
+#legend-l {
+  position: absolute;
+  top: 0
 }

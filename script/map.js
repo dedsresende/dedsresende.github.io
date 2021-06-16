@@ -132,7 +132,7 @@ function clearMap(){
   $(".data-box").each(function(){$(this).fadeOut("slow")});
   $(".compare-box").fadeOut("slow");
   $(".legend").fadeOut("slow");
-  $("#guide-txt").text("Select one or more locations");
+  $("#guide-txt").text("Select one location to explore or select more than one location to compare them:");
 
   map.eachLayer(function(layer){
     if(layer["options"]["type"] === 'marker' || layer["options"]["type"] === 'isochrone' || layer["options"]["type"] === 'grid'){
@@ -305,19 +305,18 @@ function fillIsoc(pk, time){
       stats = databoard_realestate.filter(i=>i["pk"]===pk);
       stats = stats[0];
       dbf_val_1 = stats["total"];
-      dbf_txt_1 = "total of offers";
-      dbf_val_2 = Math.round(Number(stats["total_perc"])).toString()+"%";
-      dbf_txt_2 = "among all offers in Vilnius";
-      dbf_val_3 = Math.round(Number(stats["price_sqm_avg"])).toString()+"€/m²";
-      dbf_txt_3 = "mean price/sqm";
+      dbf_val_2 = Math.round(stats["price_sqm_avg"]);
+      $(`[data_id="${bottom_menu}"][data="dbf-val-1"]`).text(dbf_val_1);
+      addBarChart(dbf_val_2);
+
       legend_txt = "offers";
       legend_l_val = stats["total"];
       legend_s_val = stats["total"];
       break;
   };
 
-  $(".legend-l").attr("title", `${legend_l_val} ${legend_txt}`);
-  $(".legend-s").attr("title", `${legend_s_val} ${legend_txt}`);
+  $("#legend-l").text(`${legend_l_val} ${legend_txt}`);
+  $("#legend-s").text(`${legend_s_val} ${legend_txt}`);
 
   var data_fill = df.filter(i=>i["pk"]===pk);
 
