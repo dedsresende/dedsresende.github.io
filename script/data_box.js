@@ -11,7 +11,7 @@ var data_sources = {
   their types and locations in the area.
   `,
   "Real estate": `
-  Real estate data gives you a clear image of rental prices,
+  Real estate data gives you a clear image of sales prices,
   change in time and vacancy for commercial type of listings.
   <br>
   Full access give you a detailed locations and information for the selected area.
@@ -119,7 +119,7 @@ Object.keys(data_sources).forEach((item, i) => {
           <h4 class="hdb" data_id="btn-realestate" data="dbf-val-1">XXX</h4>
         </div>
         <div class="data-box-txt">
-          <p class="font-weight-bold text-left" data_id="btn-realestate" data="dbf-txt-1">total available<br>rental listings<br>in the area.</p>
+          <p class="font-weight-bold text-left" data_id="btn-realestate" data="dbf-txt-1">total available<br>sales listings<br>in the area.</p>
         </div>
       </div>
       `;

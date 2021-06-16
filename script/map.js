@@ -264,10 +264,10 @@ function fillIsoc(pk, time){
       gr = grid_demographics;
       stats = databoard_demographics.filter(i=>i["pk"]===pk);
       stats = stats[0];
-      dbf_val_1 = (stats["total"]/545000*100).toFixed(2).toString()+"%";
+      dbf_val_1 = (stats["total_sum"]/545000*100).toFixed(2).toString()+"%";
       legend_txt = "people";
-      legend_l_val = stats["total"];
-      legend_s_val = stats["total"];
+      legend_l_val = stats["total_max"];
+      legend_s_val = stats["total_min"];
 
       $(`[data_id="${bottom_menu}"][data="dbf-val-1"]`).text(dbf_val_1);
       addPieChart(Math.round(Number(stats["male_perc"])), Math.round(Number(stats["female_perc"])));
@@ -281,15 +281,15 @@ function fillIsoc(pk, time){
       stats = databoard_pois.filter(i=>i["pk"]===pk);
       stats = stats[0];
       keysSorted = Object.keys(stats).sort(function(a,b){return stats[a]-stats[b]});
-      dbf_val_1 = stats["total"];
+      dbf_val_1 = stats["total_sum"];
       dbf_txt_1 = "\n total of places";
       dbf_val_2 = stats[keysSorted[keysSorted.length-3]];
       dbf_txt_2 = `\n ${keysSorted[keysSorted.length-3]}`;
       dbf_val_3 = stats[keysSorted[keysSorted.length-4]];
       dbf_txt_3 = `\n ${keysSorted[keysSorted.length-4]}`;
       legend_txt = "places";
-      legend_l_val = stats["total"];
-      legend_s_val = stats["total"];
+      legend_l_val = stats["total_max"];
+      legend_s_val = stats["total_min"];
 
       $(`[data_id="${bottom_menu}"][data="dbf-val-1"]`).text(dbf_val_1);
       $(`[data_id="${bottom_menu}"][data="dbf-txt-1"]`).text(dbf_txt_1);
@@ -304,14 +304,14 @@ function fillIsoc(pk, time){
       gr = grid_realestate;
       stats = databoard_realestate.filter(i=>i["pk"]===pk);
       stats = stats[0];
-      dbf_val_1 = stats["total"];
+      dbf_val_1 = stats["total_sum"];
       dbf_val_2 = Math.round(stats["price_sqm_avg"]);
       $(`[data_id="${bottom_menu}"][data="dbf-val-1"]`).text(dbf_val_1);
       addBarChart(dbf_val_2);
 
       legend_txt = "offers";
-      legend_l_val = stats["total"];
-      legend_s_val = stats["total"];
+      legend_l_val = stats["total_max"];
+      legend_s_val = stats["total_min"];
       break;
   };
 
@@ -319,13 +319,6 @@ function fillIsoc(pk, time){
   $("#legend-s").text(`${legend_s_val} ${legend_txt}`);
 
   var data_fill = df.filter(i=>i["pk"]===pk);
-
-  // $(`[data_id="${bottom_menu}"][data="dbf-val-1"]`).text(dbf_val_1);
-  // $(`[data_id="${bottom_menu}"][data="dbf-txt-1"]`).text(dbf_txt_1);
-  // $(`[data_id="${bottom_menu}"][data="dbf-val-2"]`).text(dbf_val_2);
-  // $(`[data_id="${bottom_menu}"][data="dbf-txt-2"]`).text(dbf_txt_2);
-  // $(`[data_id="${bottom_menu}"][data="dbf-val-3"]`).text(dbf_val_3);
-  // $(`[data_id="${bottom_menu}"][data="dbf-txt-3"]`).text(dbf_txt_3);
 
   data_fill.forEach((item, i) => {
     var grid_id = item["id"];
