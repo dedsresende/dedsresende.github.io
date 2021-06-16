@@ -11,6 +11,7 @@ var isoc_opt = {
 var fill_map = false;
 var top_menu;
 var bottom_menu;
+var compare = {"btn-demographics": new Set(), "btn-activities": new Set(), "btn-realestate": new Set()};
 
 
 function fillCompareBox(time){
@@ -47,19 +48,20 @@ function fillCompareBox(time){
 
     stats = isoc.filter(i=>i["osmid"]===osmid && i["time"]===time);
     stats = stats[0];
-    console.log(">>>>>>>> ID FILTRADOS", stats);
     pk = stats["pk"];
 
     stats = st.filter(i=>i["pk"]===pk);
-    console.log(`>>>>>>>> JSON COM DADOS POR ID ${pk}`, stats);
+    stats.forEach((item, i) => {
+      delete item["pk"];
+      item = {"selected places": adr, ...item};
+      compare[bottom_menu].add(item);
+    });
+  });
 
-    if(stats.length>0){
-      stats = stats[0];
-      delete stats["pk"];
-      stats = {"selected places": adr, ...stats};
-      thead = stats;
-      tbody.push(stats);
-    };
+  compare_data = Array.from(compare[bottom_menu]);
+  compare_data.forEach((item, i) => {
+    thead = item;
+    tbody.push(item);
   });
 
   thead = Object.keys(thead);
@@ -124,6 +126,8 @@ $("#btn-explore,#btn-compare").click(function(){
       $(this).removeClass("btn-menu-selected");
     };
   });
+
+  // $("#btn-demographics").click();
 });
 
 
@@ -181,6 +185,8 @@ $("#btn-explore").click(function(){
   if(markers_sel.size===1){
     $(".right-menu-bottom").fadeIn("slow");
   };
+
+  $("#btn-demographics").click();
 });
 
 
@@ -191,6 +197,8 @@ $("#btn-compare").click(function(){
   if(markers_sel.size>1){
     $(".right-menu-bottom").fadeIn("slow");
   };
+
+  $("#btn-demographics").click();
 });
 
 
